@@ -5,4 +5,6 @@ typedef struct node{
   struct node *leftNode;
   struct node *rightNode;
 } node;
+
+void *insert(node* root, int num);
 #endif
