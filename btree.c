@@ -30,6 +30,9 @@ void *insert(node* root,int num){
   }
 }  
 
+void remove(){
+}
+
 void printTree(node* root){
   if(root == NULL){
     return;
