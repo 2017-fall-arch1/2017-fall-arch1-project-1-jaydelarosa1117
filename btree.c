@@ -6,10 +6,8 @@ void *insert(node* root,int num){
   if(root == NULL){
     root = (node *)malloc(sizeof(node));
     root->item = num;
-    printf("im in side the assign\n");
   }
   else if(num < root->item){
-    printf("going left\n");
     if(root->leftNode == NULL){
       root->leftNode = (node *)malloc(sizeof(node));
       root->leftNode->item = num;
@@ -30,7 +28,23 @@ void *insert(node* root,int num){
   }
 }  
 
-void *removeNode(node* root, int num){
+node *removeNode(node* root, int num){
+  if(root == NULL){
+    return root;
+  }
+  else if(root->item == num){
+    if(root->leftNode == NULL && root->rightNode == NULL){
+      free(root);
+      return NULL;
+    }
+  }
+  else if(num < root->item){
+    root->leftNode = removeNode(root->leftNode,num);
+  }
+  else if(num > root->item){
+    root->rightNode = removeNode(root->rightNode,num);
+  }
+  return root;
 }
 
 void printTree(node* root){
@@ -44,24 +58,19 @@ void printTree(node* root){
 
 int main(){
   node *n = (node *)malloc(sizeof(node));
-  n->item = 1010;
-  node *ln  =(node *)malloc(sizeof(node));
-  node *rn  =(node *)malloc(sizeof(node));
-  //ln->item = 1009;
-  //rn->item = 1011;
-  //n->leftNode = ln;
-  //n->rightNode = rn;
-  insert(n,0);
+  n->item = 50;
+
   insert(n,12);
   insert(n,42);
   insert(n,3000);
   insert(n,2000);
   insert(n,6000);
-  insert(n,6000);
-  insert(n,6000);
+  //printTree(n);
+  //printf("\n");
+  //n = n->leftNode;
+  //free(n);
+  //printTree(n);
+  //removeNode(n,42);
   printTree(n);
-  if(n->leftNode == NULL){
-    //  printf("it is null\n");
-  }
   return 0;
 }
