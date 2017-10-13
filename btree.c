@@ -30,7 +30,7 @@ void *insert(node* root,int num){
   }
 }  
 
-void remove(){
+void *remove(node* root, int num){
 }
 
 void printTree(node* root){
