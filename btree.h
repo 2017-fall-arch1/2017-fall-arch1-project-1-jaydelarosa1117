@@ -7,4 +7,5 @@ typedef struct node{
 } node;
 
 void *insert(node* root, int num);
+void *removeNode(node* root, int num);
 #endif

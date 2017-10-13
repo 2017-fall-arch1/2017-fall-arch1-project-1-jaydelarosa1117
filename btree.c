@@ -30,7 +30,7 @@ void *insert(node* root,int num){
   }
 }  
 
-void *remove(node* root, int num){
+void *removeNode(node* root, int num){
 }
 
 void printTree(node* root){
@@ -56,6 +56,8 @@ int main(){
   insert(n,42);
   insert(n,3000);
   insert(n,2000);
+  insert(n,6000);
+  insert(n,6000);
   insert(n,6000);
   printTree(n);
   if(n->leftNode == NULL){
