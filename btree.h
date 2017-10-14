@@ -8,4 +8,6 @@ typedef struct node{
 
 void *insert(node* root, int num);
 struct node *removeNode(node* root, int num);
+int maxNode(node* root);
+int minNode(node* root);
 #endif

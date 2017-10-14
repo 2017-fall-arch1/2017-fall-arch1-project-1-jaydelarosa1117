@@ -37,6 +37,21 @@ node *removeNode(node* root, int num){
       free(root);
       return NULL;
     }
+    else if(root->rightNode == NULL){
+      int mx = maxNode(root->leftNode);
+      root->item = mx;
+      root->leftNode =  removeNode(root->leftNode,mx);
+    }
+    else if(root->leftNode == NULL){
+      int mn = minNode(root->rightNode);
+      root->item = mn;
+      root->rightNode =  removeNode(root->rightNode,mn);
+    }
+    else{
+      int mn = minNode(root->rightNode);
+      root->item = mn;
+      root->rightNode =  removeNode(root->rightNode,mn);
+    }
   }
   else if(num < root->item){
     root->leftNode = removeNode(root->leftNode,num);
@@ -46,6 +61,22 @@ node *removeNode(node* root, int num){
   }
   return root;
 }
+
+
+int maxNode(node* root){
+  if(root->rightNode == NULL){
+    return root->item;
+  }
+  return maxNode(root->rightNode);
+}
+int minNode(node* root){
+  if(root->leftNode == NULL){
+    return root->item;
+  }
+  return minNode(root->leftNode);
+}
+  
+
 
 void printTree(node* root){
   if(root == NULL){
@@ -59,18 +90,21 @@ void printTree(node* root){
 int main(){
   node *n = (node *)malloc(sizeof(node));
   n->item = 50;
-
   insert(n,12);
   insert(n,42);
   insert(n,3000);
   insert(n,2000);
   insert(n,6000);
-  //printTree(n);
+
+  printTree(n);
+  printf("\n");
+  removeNode(n,6000);
+  printTree(n);
   //printf("\n");
   //n = n->leftNode;
   //free(n);
   //printTree(n);
   //removeNode(n,42);
-  printTree(n);
+  //int mx = min(n);
   return 0;
 }
