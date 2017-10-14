@@ -28,6 +28,19 @@ void *insert(node* root,int num){
   }
 }  
 
+void fileToTree(node* root){
+  FILE *file;
+  file = fopen("p.txt", "r");
+  if(file){
+    int c;
+    while((c=getc(file)) != EOF){
+      insert(root,(int)c);
+    }
+  }
+  fclose(file);
+}
+
+
 node *removeNode(node* root, int num){
   if(root == NULL){
     return root;
@@ -90,21 +103,7 @@ void printTree(node* root){
 int main(){
   node *n = (node *)malloc(sizeof(node));
   n->item = 50;
-  insert(n,12);
-  insert(n,42);
-  insert(n,3000);
-  insert(n,2000);
-  insert(n,6000);
-
+  fileToTree(n);
   printTree(n);
-  printf("\n");
-  removeNode(n,6000);
-  printTree(n);
-  //printf("\n");
-  //n = n->leftNode;
-  //free(n);
-  //printTree(n);
-  //removeNode(n,42);
-  //int mx = min(n);
   return 0;
 }

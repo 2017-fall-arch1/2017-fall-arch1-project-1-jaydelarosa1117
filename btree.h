@@ -10,4 +10,5 @@ void *insert(node* root, int num);
 struct node *removeNode(node* root, int num);
 int maxNode(node* root);
 int minNode(node* root);
+void fileToTree(node* root);
 #endif
