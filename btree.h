@@ -6,11 +6,11 @@ typedef struct node{
   struct node *rightNode;
 } node;
 
-void *insert(node* root, char *newNam);
+struct node *insert(node* root, char *newNam);
 struct node *removeNode(node* root, char *newName);
 char *maxNode(node* root);
 char *minNode(node* root);
-void fileToTree(node* root, char *fileName);
+struct node *fileToTree(node* root, char *fileName);
 void treeToFile(node* root, char *fileName);
 void writerHelper(node* root, FILE *file);
 #endif
