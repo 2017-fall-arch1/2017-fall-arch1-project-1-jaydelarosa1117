@@ -1,14 +1,16 @@
 #ifndef btree_include
 #define btree_include
 typedef struct node{
-  int item;
+  char* name;
   struct node *leftNode;
   struct node *rightNode;
 } node;
 
-void *insert(node* root, int num);
-struct node *removeNode(node* root, int num);
-int maxNode(node* root);
-int minNode(node* root);
-void fileToTree(node* root);
+void *insert(node* root, char *newNam);
+struct node *removeNode(node* root, char *newName);
+char *maxNode(node* root);
+char *minNode(node* root);
+void fileToTree(node* root, char *fileName);
+void treeToFile(node* root, char *fileName);
+void writerHelper(node* root, FILE *file);
 #endif

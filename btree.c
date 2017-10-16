@@ -1,90 +1,78 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "btree.h"
+#include <string.h>
+void *insert(node* root,char *newName){
 
-void *insert(node* root,int num){
   if(root == NULL){
     root = (node *)malloc(sizeof(node));
-    root->item = num;
+    root->name = newName;
   }
-  else if(num < root->item){
+  else if(strcmp(newName,root->name)==-1){
     if(root->leftNode == NULL){
       root->leftNode = (node *)malloc(sizeof(node));
-      root->leftNode->item = num;
+      root->leftNode->name = newName;
     }
     else{
-      insert(root->leftNode,num);
+      insert(root->leftNode,newName);
     }
    }
   
-  else if(num > root->item){
+  else if(strcmp(newName, root->name)){
     if(root->rightNode == NULL){
       root->rightNode = (node *)malloc(sizeof(node));
-      root->rightNode->item = num;
+      root->rightNode->name = newName;
     }
     else{
-      insert(root->rightNode,num);
+      insert(root->rightNode,newName);
     }
   }
 }  
 
-void fileToTree(node* root){
-  FILE *file;
-  file = fopen("p.txt", "r");
-  if(file){
-    int c;
-    while((c=getc(file)) != EOF){
-      insert(root,(int)c);
-    }
-  }
-  fclose(file);
-}
-
-
-node *removeNode(node* root, int num){
+node *removeNode(node* root, char *newName){
   if(root == NULL){
     return root;
   }
-  else if(root->item == num){
+  else if(~strcmp(newName,root->name)){
     if(root->leftNode == NULL && root->rightNode == NULL){
       free(root);
       return NULL;
     }
     else if(root->rightNode == NULL){
-      int mx = maxNode(root->leftNode);
-      root->item = mx;
+      char *mx = maxNode(root->leftNode);
+      root->name = mx;
       root->leftNode =  removeNode(root->leftNode,mx);
     }
     else if(root->leftNode == NULL){
-      int mn = minNode(root->rightNode);
-      root->item = mn;
+      char *mn = minNode(root->rightNode);
+      root->name = mn;
       root->rightNode =  removeNode(root->rightNode,mn);
     }
     else{
-      int mn = minNode(root->rightNode);
-      root->item = mn;
+      char *mn = minNode(root->rightNode);
+      root->name = mn;
       root->rightNode =  removeNode(root->rightNode,mn);
     }
   }
-  else if(num < root->item){
-    root->leftNode = removeNode(root->leftNode,num);
+  else if(strcmp(newName,root->name)==-1){
+    root->leftNode = removeNode(root->leftNode,newName);
   }
-  else if(num > root->item){
-    root->rightNode = removeNode(root->rightNode,num);
+  else if(strcmp(newName,root->name)){
+    root->rightNode = removeNode(root->rightNode,newName);
   }
   return root;
 }
 
 
-int maxNode(node* root){
+char* maxNode(node* root){
   if(root->rightNode == NULL){
-    return root->item;
+    return root->name;
   }
   return maxNode(root->rightNode);
 }
-int minNode(node* root){
+char* minNode(node* root){
   if(root->leftNode == NULL){
-    return root->item;
+    return root->name;
   }
   return minNode(root->leftNode);
 }
@@ -96,14 +84,60 @@ void printTree(node* root){
     return;
   }
   printTree(root->leftNode);
-  printf("%d\n",root->item);
+  printf("%s\n",root->name);
   printTree(root->rightNode);
+ }
+
+void writerHelper(node* root, FILE *file){
+  if(root==NULL){
+    return;
+  }
+  fprintf(file,"%s\n",root->name);
+  writerHelper(root->leftNode,file);
+  writerHelper(root->rightNode,file);
+  
+}
+void treeToFile(node* root, char* fileName){
+  FILE *file = fopen(fileName,"w");
+  writerHelper(root,file);
 }
 
+
+void fileToTree(node* root, char *fileName){
+  FILE *file = fopen(fileName, "r");
+  if(file){
+    char names[255];
+    char *name;
+    while(fgets(names,150,file)){
+      name = (char *)strtok(names,"\n");
+      printf("%s",name);
+      insert(root,names);
+    }
+    
+  }
+  fclose(file);
+}
+
+
+void ui(){
+  printf("Welcome to the employee manager");
+  int choice = -1;
+  while(choice != 0){
+  }
+}
+/*
 int main(){
   node *n = (node *)malloc(sizeof(node));
-  n->item = 50;
-  fileToTree(n);
+  n->name = "";
+  //printTree(n);
+  printf("\n");
+  insert(n,"a");
+  insert(n,"b");
+  insert(n,"c");
+  insert(n,"d");
+  fileToTree(n,"namesP.txt");
   printTree(n);
   return 0;
 }
+
+*/
