@@ -3,10 +3,21 @@
 #include "btree.h"
 #include <string.h>
 
-node *insert(node* root,char *newName){
-  if(root == NULL){
+
+void printTree(node* root){
+  if(root == NULL||root->name==NULL){
+    return;
+  }
+  printTree(root->leftNode);
+  printf("%s\n",root->name);
+  printTree(root->rightNode);
+}
+
+node *insert(node* root,char *newName){     
+  if(root == NULL||root->name==NULL){
     char *name = malloc(255);
     strcpy(name,newName);
+    //printf("INSERTED: **%s**\n", name);
     root = (node*)malloc(255);
     root->name = name;
     return root;
@@ -18,9 +29,13 @@ node *insert(node* root,char *newName){
   else if(strcmp(newName, root->name)){
     root->rightNode = insert(root->rightNode,newName);
   }
+  
   return root;
 }  
 
+node *removeNull(node* root){
+  return NULL;
+}
 
 node *removeNode(node* root, char *newName){
   if(root == NULL){
@@ -69,26 +84,15 @@ char* minNode(node* root){
   }
   return minNode(root->leftNode);
 }
-  
-
-
-void printTree(node* root){
-  if(root == NULL){
-    return;
-  }
-  printTree(root->leftNode);
-  printf("%s\n",root->name);
-  printTree(root->rightNode);
- }
 
 void writerHelper(node* root, FILE *file){
-  if(root==NULL){
+  if(root==NULL || root->name==NULL){
     return;
   }
+  printf("%s\n",root->name);
   fprintf(file,"%s\n",root->name);
   writerHelper(root->leftNode,file);
   writerHelper(root->rightNode,file);
-  
 }
 void treeToFile(node* root, char* fileName){
   FILE *file = fopen(fileName,"w");
@@ -99,78 +103,23 @@ void treeToFile(node* root, char* fileName){
 node *fileToTree(node* root, char *fileName){
   FILE *file = fopen(fileName, "r"); 
   if(file!=NULL){
-    char line[255];
-    char name[255];
-    int i = 1;
-    while(fgets(line,255,file)!=NULL){
-      sscanf(line,"%[^\t\n]s", name);
-      root = insert(root,name);
-      i++;
+    int lines = 0;
+    while(feof(file)==0){
+      char x[255];
+      fscanf(file,"%s",x);
+      lines++;
+      printf("%d\n",lines);
     }
-    
+    FILE *file2 = fopen(fileName, "r");
+    lines-=1;
+    int i;
+    for(i=0;i<lines;i++){
+      char x[255];
+      fscanf(file2,"%s",x);
+      printf("%s",x);
+      root = insert(root,x);
+    }
     fclose(file);
   }
   return root;
 }
-
-
-void ui(){
-  printf("Welcome to the employee manager\nWhat would you like to do\n");
-  int choice = -1;
-  node *employees = NULL;
-  while(1){
-    printf("0 quit\n1 print employees\n2 add employee\n3 delete employee\n");
-    printf("4 read from file\n5 store on file\n");
-    scanf("%d",&choice);
-    
-    if(choice == 0){
-      printf("\nsave before quitting?\n0 no\n1 yes");
-      scanf("%d", &choice);
-      if(choice == 0){
-	return;
-      }
-      else if(choice == 1){
-	char fileName[255];
-	printf("enter file to write to\n");
-	scanf("%s",fileName);
-	treeToFile(employees,fileName);
-      }
-    }
-    else if(choice == 1){
-      printf("\n");
-      printTree(employees);
-      printf("\n");
-    }
-    else if(choice == 2){
-      char newName[255];
-      printf("enter new employee name\n");
-      scanf(" %[^\t\n]s",&newName);
-      employees = insert(employees, newName);
-    }
-    else if(choice == 3){
-      char name[255];
-      printf("enter employee to remove\n");
-      scanf(" %[^\t\n]s",&name);
-      employees = removeNode(employees,name);
-    }
-    else if(choice == 4){
-      char fileName[255];
-      printf("enter file to read from\n");
-      scanf("%s",fileName);
-      employees = fileToTree(employees,fileName);
-    }
-    else if(choice == 5){
-      char fileName[255];
-      printf("enter file to write to\n");
-      scanf("%s",fileName);
-      treeToFile(employees,fileName);
-    }
-    
-  }
-}
-
-int main(){
-  ui();
-  return 0;
-}
-
