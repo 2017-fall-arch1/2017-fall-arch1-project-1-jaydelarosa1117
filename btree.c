@@ -17,7 +17,6 @@ node *insert(node* root,char *newName){
   if(root == NULL||root->name==NULL){
     char *name = malloc(255);
     strcpy(name,newName);
-    //printf("INSERTED: **%s**\n", name);
     root = (node*)malloc(255);
     root->name = name;
     return root;
