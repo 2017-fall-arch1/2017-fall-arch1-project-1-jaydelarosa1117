@@ -18,5 +18,4 @@ clean:
 	rm -f *.o '#*#' main
 
 demo: main
-	./main 
-
+	(echo 2; echo "employee 1"; echo 2; echo "employee 2";echo 1; echo 0; echo 0) | ./main
