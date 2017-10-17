@@ -15,7 +15,7 @@ main.o: main.c btree.h
 	cc -c $(CFLAGS) main.c
 
 clean:
-	rm -f *.o main
+	rm -f *.o '#*#' main
 
 demo: main
 	./main 

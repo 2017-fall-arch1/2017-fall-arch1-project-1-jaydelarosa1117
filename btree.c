@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include "btree.h"
 #include <string.h>
-
+#include <ctype.h>
 
 void printTree(node* root){
   if(root == NULL||root->name==NULL){
@@ -32,10 +32,6 @@ node *insert(node* root,char *newName){
   
   return root;
 }  
-
-node *removeNull(node* root){
-  return NULL;
-}
 
 node *removeNode(node* root, char *newName){
   if(root == NULL){
@@ -99,27 +95,24 @@ void treeToFile(node* root, char* fileName){
   writerHelper(root,file);
 }
 
-
 node *fileToTree(node* root, char *fileName){
-  FILE *file = fopen(fileName, "r"); 
-  if(file!=NULL){
-    int lines = 0;
-    while(feof(file)==0){
-      char x[255];
-      fscanf(file,"%s",x);
-      lines++;
-      printf("%d\n",lines);
+  FILE *file = fopen(fileName,"r");
+  if(!file){
+    return root;
+  }
+  char c;
+  char *str = malloc(255);
+  int i = 0;
+  for(c = fgetc(file);c != EOF;c = fgetc(file)){
+    if(c != '\n'){
+      str[i] = c;
+      i++;
     }
-    FILE *file2 = fopen(fileName, "r");
-    lines-=1;
-    int i;
-    for(i=0;i<lines;i++){
-      char x[255];
-      fscanf(file2,"%s",x);
-      printf("%s",x);
-      root = insert(root,x);
+    else{
+      str[i] = 0;
+      root = insert(root,str);
+      i = 0;
     }
-    fclose(file);
   }
   return root;
 }

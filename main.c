@@ -13,7 +13,7 @@ void ui(){
     scanf("%d",&choice);
     
     if(choice == 0){
-      printf("\nsave before quitting?\n0 no\n1 yes\n");
+      printf("\nsave before quitting?\n0 no\n1 yes\nanykey to cancel\n");
       scanf("%d", &choice);
       if(choice == 0){
 	return;
@@ -23,6 +23,7 @@ void ui(){
 	printf("enter file to write to\n");
 	scanf("%s",fileName);
 	treeToFile(employees,fileName);
+	return;
       }
     }
     else if(choice == 1){
@@ -33,7 +34,7 @@ void ui(){
     else if(choice == 2){
       char newName[255];
       printf("enter new employee name\n");
-      scanf("%s",&newName);
+      scanf(" %[^\t\n]s",&newName);
       employees = insert(employees, newName);
     }
     else if(choice == 3){
@@ -54,7 +55,7 @@ void ui(){
       scanf("%s",fileName);
       treeToFile(employees,fileName);
     }
-    
+    choice = 0;
   }
 }
 
